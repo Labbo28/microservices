@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.BookingMapper">
+
+    <resultMap id="bookingResultMap" type="model.Booking">
+        <id property="id" column="id_booking"/>
+        <result property="customerId" column="id_customer"/>
+        <result property="bookingDate" column="booking_date"/>
+        <result property="bookingTime" column="booking_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="bookingResultMap">
+        SELECT id_booking, id_customer, booking_date, booking_time, status FROM bookings
+    </select>
+
+    <select id="getById" parameterType="long" resultMap="bookingResultMap">
+        SELECT id_booking, id_customer, booking_date, booking_time, status FROM bookings WHERE id_booking = #{id}
+    </select>
+
+    <insert id="insert" parameterType="model.Booking" useGeneratedKeys="true" keyProperty="id" keyColumn="id_booking">
+        INSERT INTO bookings (id_customer, booking_date, booking_time, status)
+        VALUES (#{customerId}, #{bookingDate}, #{bookingTime}, #{status})
+    </insert>
+
+    <update id="update" parameterType="model.Booking">
+        UPDATE bookings
+        SET id_customer = #{customerId}, booking_date = #{bookingDate}, booking_time = #{bookingTime}, status = #{status}
+        WHERE id_booking = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM bookings WHERE id_booking = #{id}
+    </delete>
+
+</mapper>

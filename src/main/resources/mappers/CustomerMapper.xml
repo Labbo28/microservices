@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.CustomerMapper">
+
+    <resultMap id="customerResultMap" type="model.Customer">
+        <id property="id" column="id_customer"/>
+        <result property="name" column="customer_name"/>
+        <result property="email" column="email"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="customerResultMap">
+        SELECT id_customer, customer_name, email FROM customers
+    </select>
+
+    <select id="getById" parameterType="long" resultMap="customerResultMap">
+        SELECT id_customer, customer_name, email FROM customers WHERE id_customer = #{id}
+    </select>
+
+    <insert id="insert" parameterType="model.Customer" useGeneratedKeys="true" keyProperty="id" keyColumn="id_customer">
+        INSERT INTO customers (customer_name, email) 
+        VALUES (#{name}, #{email})
+    </insert>
+
+    <update id="update" parameterType="model.Customer">
+        UPDATE customers 
+        SET customer_name = #{name}, email = #{email} 
+        WHERE id_customer = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM customers WHERE id_customer = #{id}
+    </delete>
+
+</mapper>
